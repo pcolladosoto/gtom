@@ -44,3 +44,51 @@ type AnnotationResponse struct {
 	// Text for the annotation. (optional)
 	Text string `json:"text"`
 }
+
+type gtomConfig struct {
+	BindAddr string `json:"bindAddress"`
+	BindPort int    `json:"bindPort"`
+}
+
+// Request for the query API as seen on
+// https://grafana.com/grafana/plugins/grafana-simple-json-datasource/
+type QueryReq struct {
+	PanelId      string
+	Range        Range
+	IntervalMs   int
+	Targets      []Target
+	AdHocFilters []AdHocFilter
+	Format       string
+	MaxDataPoint int
+}
+
+type Target struct {
+	Target string
+	RefId  string
+	Type   string
+}
+
+type AdHocFilter struct {
+	Key      string
+	Operator string
+	Value    string
+}
+
+type QueryResponseTimeserie struct {
+	// The queried field
+	Target string `json:"target"`
+
+	Datapoints []Datapoint `json:"datapoints"`
+}
+
+// The first element is the value and the second one the
+// UNIX timestamp in milliseconds.
+type Datapoint [2]float64
+
+type QueryResponseTable struct{}
+
+type SearchReq struct {
+	Target string
+}
+
+type SearchResponse []string
