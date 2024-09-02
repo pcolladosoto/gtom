@@ -39,13 +39,17 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 func NewServer(database *db) *echo.Echo {
 	e := echo.New()
 
+	// Hide Echo's banners and overall publicity xD
+	e.HideBanner = true
+	e.HidePort = true
+
 	e.Validator = &CustomValidator{validator: validator.New()}
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	e.POST("/find", func(c echo.Context) error {
+	e.GET("/find", func(c echo.Context) error {
 		var fr findReq
 		if err := c.Bind(&fr); err != nil {
 			return c.JSON(http.StatusBadRequest, response{
@@ -65,12 +69,12 @@ func NewServer(database *db) *echo.Echo {
 
 		slog.Debug("find request", "req", fr)
 
-		resp, err := database.find(fr.Collection, fr.From, fr.To, []byte(fr.Filter))
+		resp, err := database.find(fr.Collection, fr.From, fr.To, fr.Filter)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, response{
 				StatusCode: http.StatusBadRequest,
 				Data:       "bad request",
-				Error:      "either collection or filter not specified",
+				Error:      err.Error(),
 			})
 		}
 
