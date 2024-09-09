@@ -1,13 +1,13 @@
 version: '3'
 
 vars:
-  BIN:   './bin/gtom'
+  BIN:   './bin/gtom-proxy'
   GIT_COMMIT:
     sh: git log -n 1 --format=%h
 
 tasks:
   default:
-    desc: "Build gtom for mac/amd64 platforms."
+    desc: "Build the gtom proxy for mac/amd64 platforms."
     cmds:
       - go build -o "{{.BIN}}.${GOOS}.${GOARCH}" -ldflags "-X main.commit={{.GIT_COMMIT}}"
     env:
@@ -15,7 +15,7 @@ tasks:
       GOARCH: 'amd64'
 
   linux:
-    desc: "Build gtom for linux/amd64 platforms."
+    desc: "Build the gtom proxy for linux/amd64 platforms."
     cmds:
       - go build -o "{{.BIN}}.${GOOS}.${GOARCH}" -ldflags "-X main.commit={{.GIT_COMMIT}}"
     env:

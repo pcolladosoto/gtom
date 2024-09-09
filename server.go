@@ -84,5 +84,9 @@ func NewServer(database *db) *echo.Echo {
 		})
 	})
 
+	e.POST("/metrics", func(c echo.Context) error {
+		return c.Blob(http.StatusOK, "application/json", []byte(`[{"label": "Foo Metric", "value": "fooMetric"}, {"label": "Faa Metric", "value": "faaMetric"}]`))
+	})
+
 	return e
 }

@@ -1,4 +1,4 @@
-module github.com/pcolladosoto/gtom
+module github.com/pcolladosoto/gtom-proxy
 
 go 1.19
 
